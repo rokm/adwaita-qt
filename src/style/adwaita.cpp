@@ -396,6 +396,8 @@ int Adwaita::pixelMetric(PixelMetric metric, const QStyleOption *opt, const QWid
             return 11;
         case PM_SplitterWidth:
             return 6;
+        case PM_ProgressBarChunkWidth:
+            return 0;
         default:
             return QCommonStyle::pixelMetric(metric, opt, widget);
     }
@@ -410,8 +412,6 @@ int Adwaita::styleHint(StyleHint hint, const QStyleOption *opt, const QWidget *w
         case QStyle::SH_Menu_MouseTracking:
         case QStyle::SH_MenuBar_MouseTracking:
             return 1;
-        case QStyle::PM_ProgressBarChunkWidth:
-            return 0;
         default:
             return QCommonStyle::styleHint(hint, opt, widget, returnData);
     }
