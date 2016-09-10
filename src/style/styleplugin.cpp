@@ -26,9 +26,9 @@ StylePlugin::StylePlugin(QObject* parent)
 
 QStyle* StylePlugin::create(const QString& key) {
     if (key.toLower() == "adwaita")
-        return new Adwaita(false);
-    else if (key.toLower() == "adwaita-dark")
         return new Adwaita(true);
+    else if (key.toLower() == "adwaita-dark")
+        return new Adwaita(false);
     return nullptr;
 }
 
