@@ -1270,7 +1270,7 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
             if (opt->state & State_Sunken)
                 p->setBrush(transparentize(Qt::black, 0.9));
             if (opt->state & State_Enabled && opt->activeSubControls == SC_SpinBoxDown && sbOpt->stepEnabled & QAbstractSpinBox::StepDownEnabled) {
-                p->drawRect(down.adjusted(1, 1, 1, 0));
+                p->drawRect(down.adjusted(1, 1, -1, -1));
             }
             if (opt->state & State_Enabled && opt->activeSubControls == SC_SpinBoxUp && sbOpt->stepEnabled & QAbstractSpinBox::StepUpEnabled) {
                 QPainterPath path;
