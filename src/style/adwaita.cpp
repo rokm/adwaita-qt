@@ -272,13 +272,13 @@ void Adwaita::polish(QPalette &palette)
     // All, used especially for active elements in a focused window
     palette.setColor(QPalette::All,      QPalette::Window,          bgColor);
     palette.setColor(QPalette::All,      QPalette::WindowText,      fgColor);
-    palette.setColor(QPalette::All,      QPalette::Base,            !lightTheme ? QColor("#2C2C2C") : QColor("white"));
+    palette.setColor(QPalette::All,      QPalette::Base,            baseColor);
     palette.setColor(QPalette::All,      QPalette::AlternateBase,   !lightTheme ? QColor("#292929") : QColor("#ededed"));
     palette.setColor(QPalette::All,      QPalette::ToolTipBase,     QColor("#060606"));
     palette.setColor(QPalette::All,      QPalette::ToolTipText,     QColor("white"));
-    palette.setColor(QPalette::All,      QPalette::Text,            !lightTheme ? QColor("#EEEEEC") : QColor("#2e3436"));
+    palette.setColor(QPalette::All,      QPalette::Text,            fgColor);
     palette.setColor(QPalette::All,      QPalette::Button,          !lightTheme ? QColor("#363C3C") : QColor("#e0e0e0"));
-    palette.setColor(QPalette::All,      QPalette::ButtonText,      !lightTheme ? QColor("#EEEEEC") : QColor("#2e3436"));
+    palette.setColor(QPalette::All,      QPalette::ButtonText,      fgColor);
     palette.setColor(QPalette::All,      QPalette::BrightText,      !lightTheme ? QColor("black") : QColor("white"));
 
     palette.setColor(QPalette::All,      QPalette::Light,           !lightTheme ? QColor("#080808") : QColor("#fafafa"));
@@ -294,15 +294,15 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::All,      QPalette::LinkVisited,     QColor("#2a76c6"));
 
     // Exceptions for disabled elements in a focused window
-    palette.setColor(QPalette::Disabled, QPalette::Window,          QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::WindowText,      QColor("#8d9091"));
-    palette.setColor(QPalette::Disabled, QPalette::Base,            QColor("white"));
+    palette.setColor(QPalette::Disabled, QPalette::Window,          insensitiveBgColor);
+    palette.setColor(QPalette::Disabled, QPalette::WindowText,      insensitiveFgColor);
+    palette.setColor(QPalette::Disabled, QPalette::Base,            insensitiveBgColor);
     palette.setColor(QPalette::Disabled, QPalette::AlternateBase,   QColor("#ededed"));
 //     palette.setColor(QPalette::Disabled, QPalette::ToolTipBase,     QColor("#ff1234"));
 //     palette.setColor(QPalette::Disabled, QPalette::ToolTipText,     QColor("#ff1234"));
-    palette.setColor(QPalette::Disabled, QPalette::Text,            QColor("#8d9091"));
+    palette.setColor(QPalette::Disabled, QPalette::Text,            insensitiveFgColor);
     palette.setColor(QPalette::Disabled, QPalette::Button,          QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::ButtonText,      QColor("#8d9091"));
+    palette.setColor(QPalette::Disabled, QPalette::ButtonText,      insensitiveFgColor);
     palette.setColor(QPalette::Disabled, QPalette::BrightText,      QColor("#ededed"));
 
     palette.setColor(QPalette::Disabled, QPalette::Light,           QColor("#f4f4f4"));
@@ -321,13 +321,13 @@ void Adwaita::polish(QPalette &palette)
     // Exceptions for an unfocused window
     palette.setColor(QPalette::Inactive, QPalette::Window,          backdropBgColor);
     palette.setColor(QPalette::Inactive, QPalette::WindowText,      backdropFgColor);
-    palette.setColor(QPalette::Inactive, QPalette::Base,            QColor("#fcfcfc"));
+    palette.setColor(QPalette::Inactive, QPalette::Base,            backdropBaseColor);
     palette.setColor(QPalette::Inactive, QPalette::AlternateBase,   QColor("#ededed"));
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipBase,     QColor("#ff1234"));
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipText,     QColor("#ff1234"));
-    palette.setColor(QPalette::Inactive, QPalette::Text,            QColor("#54595a"));
+    palette.setColor(QPalette::Inactive, QPalette::Text,            backdropFgColor);
     palette.setColor(QPalette::Inactive, QPalette::Button,          QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::ButtonText,      QColor("#54595a"));
+    palette.setColor(QPalette::Inactive, QPalette::ButtonText,      backdropFgColor);
     palette.setColor(QPalette::Inactive, QPalette::BrightText,      QColor("#ededed"));
 
     palette.setColor(QPalette::Inactive, QPalette::Light,           QColor("#ededed"));
