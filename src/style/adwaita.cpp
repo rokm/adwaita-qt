@@ -135,73 +135,13 @@ static void unaliasedRoundedRect(QPainter *p, const QRect &r, qreal xRadius, qre
     }
 }
 
-static void adwaitaButtonBackgroundLight(QPainter *p, const QRect &r, QStyle::State s, const QPalette &palette, const QWidget *w) {
-    p->save();
-    p->setPen("#9d9d99"); // Border color
-    QLinearGradient buttonGradient(0.0, r.top(), 0.0, r.bottom());
-    if (s & QStyle::State_Active && s & QStyle::State_Enabled) {
-        if(s & QStyle::State_On || s & QStyle::State_Sunken) {
-            buttonGradient.setColorAt(0.0, QColor("#a8a8a8"));
-            buttonGradient.setColorAt(0.05, QColor("#c0c0c0"));
-            buttonGradient.setColorAt(0.15, QColor("#d6d6d6"));
-        }
-        else if (s & QStyle::State_MouseOver) {
-            buttonGradient.setColorAt(0.0, QColor("white"));
-            buttonGradient.setColorAt(0.4, QColor("#f7f7f7"));
-            buttonGradient.setColorAt(1.0, QColor("#ededed"));
-        }
-        else {
-            buttonGradient.setColorAt(0.0, QColor("#fafafa"));
-            buttonGradient.setColorAt(1.0, QColor("#e0e0e0"));
-        }
-    }
-    else {
-        if (s & QStyle::State_On || s & QStyle::State_Sunken)
-            buttonGradient.setColorAt(0.0, palette.mid().color());
-        else
-            buttonGradient.setColorAt(0.0, palette.button().color());
-    }
-    p->setBrush(QBrush(buttonGradient));
-    unaliasedRoundedRect(p, r, 3, 3);
-    p->restore();
-}
+static QColor blendColors(const QColor &color1, const QColor &color2, qreal ratio)
+{
+    double r = color1.redF()*(1-ratio) + color2.redF()*ratio;
+    double g = color1.greenF()*(1-ratio) + color2.greenF()*ratio;
+    double b = color1.blueF()*(1-ratio) + color2.blueF()*ratio;
 
-static void adwaitaButtonBackgroundDark(QPainter *p, const QRect &r, QStyle::State s, const QPalette &palette, const QWidget *w) {
-    p->save();
-    p->setPen("#1c1f1f"); // Border color
-    QLinearGradient buttonGradient(0.0, r.top(), 0.0, r.bottom());
-    if (s & QStyle::State_Active && s & QStyle::State_Enabled) {
-        if(s & QStyle::State_On || s & QStyle::State_Sunken) {
-            buttonGradient.setColorAt(0.0, QColor("#a8a8a8"));
-            buttonGradient.setColorAt(0.05, QColor("#c0c0c0"));
-            buttonGradient.setColorAt(0.15, QColor("#d6d6d6"));
-        }
-        else if (s & QStyle::State_MouseOver) {
-            buttonGradient.setColorAt(0.0, QColor("white"));
-            buttonGradient.setColorAt(0.4, QColor("#f7f7f7"));
-            buttonGradient.setColorAt(1.0, QColor("#ededed"));
-        }
-        else {
-            buttonGradient.setColorAt(0.0, QColor("#fafafa"));
-            buttonGradient.setColorAt(1.0, QColor("#e0e0e0"));
-        }
-    }
-    else {
-        if (s & QStyle::State_On || s & QStyle::State_Sunken)
-            buttonGradient.setColorAt(0.0, palette.mid().color());
-        else
-            buttonGradient.setColorAt(0.0, palette.button().color());
-    }
-    p->setBrush(QBrush(buttonGradient));
-    unaliasedRoundedRect(p, r, 3, 3);
-    p->restore();
-}
-
-static void adwaitaButtonBackground(QPainter *p, const QRect &r, QStyle::State s, const QPalette &palette, const QWidget *w, bool light) {
-    if (light)
-        return adwaitaButtonBackgroundLight(p, r, s, palette, w);
-    else
-        return adwaitaButtonBackgroundDark(p, r, s, palette, w);
+    return QColor::fromRgbF(r, g, b);
 }
 
 Adwaita::Adwaita(bool lightVariant)
@@ -219,13 +159,66 @@ Adwaita::Adwaita(bool lightVariant)
     selectedBgColor = lightTheme ? QColor("#4a90d9") : QColor("#4a90d9").darker(120);
     selectedBorders = lightTheme ? selectedBgColor.darker(130) : selectedBgColor.darker(120);
     bordersColor = lightTheme ? bgColor.darker(130) : bgColor.darker(120);
+
+    backdropBaseColor = lightTheme ? baseColor.darker(101) : baseColor.lighter(101);
+    backdropTextColor = blendColors(textColor, backdropBaseColor, 0.80);
+    backdropBgColor = bgColor;
+    backdropFgColor = blendColors(fgColor, backdropBgColor, 0.50);
+
+    /*qInfo() << "Base color:" << baseColor.name();
+    qInfo() << "Text color:" << textColor.name();
+    qInfo() << "BG color:" << bgColor.name();
+    qInfo() << "FG color:" << fgColor.name();
+    qInfo() << "";
+    qInfo() << "Selected FG color:" << selectedFgColor.name();
+    qInfo() << "Selected BG color:" << selectedBgColor.name();
+    qInfo() << "Selected borders color:" << selectedBorders.name();
+    qInfo() << "Borders color:" << bordersColor.name();
+    qInfo() << "";
+    qInfo() << "Backdrop base color:" << backdropBaseColor.name();
+    qInfo() << "Backdrop text color:" << backdropTextColor.name();
+    qInfo() << "Backdrop BG color:" << backdropBgColor.name();
+    qInfo() << "Backdrop FG color:" << backdropFgColor.name();*/
 }
+
+void Adwaita::buttonBackground(QPainter *p, const QRect &r, QStyle::State s, const QPalette &palette, const QWidget *w) const
+{
+    p->save();
+    p->setPen(bordersColor); // Border color
+    QLinearGradient buttonGradient(0.0, r.top(), 0.0, r.bottom());
+    if (s & QStyle::State_Active && s & QStyle::State_Enabled) {
+        if(s & QStyle::State_On || s & QStyle::State_Sunken) {
+            buttonGradient.setColorAt(0.0, QColor("#a8a8a8"));
+            buttonGradient.setColorAt(0.05, QColor("#c0c0c0"));
+            buttonGradient.setColorAt(0.15, QColor("#d6d6d6"));
+        }
+        else if (s & QStyle::State_MouseOver) {
+            buttonGradient.setColorAt(0.0, QColor("white"));
+            buttonGradient.setColorAt(0.4, QColor("#f7f7f7"));
+            buttonGradient.setColorAt(1.0, QColor("#ededed"));
+        }
+        else {
+            buttonGradient.setColorAt(0.0, QColor("#fafafa"));
+            buttonGradient.setColorAt(1.0, QColor("#e0e0e0"));
+        }
+    }
+    else {
+        if (s & QStyle::State_On || s & QStyle::State_Sunken)
+            buttonGradient.setColorAt(0.0, palette.mid().color());
+        else
+            buttonGradient.setColorAt(0.0, palette.button().color());
+    }
+    p->setBrush(QBrush(buttonGradient));
+    unaliasedRoundedRect(p, r, 3, 3);
+    p->restore();
+}
+
 
 void Adwaita::polish(QPalette &palette)
 {
     // All, used especially for active elements in a focused window
-    palette.setColor(QPalette::All,      QPalette::Window,          !lightTheme ? QColor("#393f3f") : QColor("#e8e8e7"));
-    palette.setColor(QPalette::All,      QPalette::WindowText,      !lightTheme ? QColor("#eeeeec") : QColor("#2e3436"));
+    palette.setColor(QPalette::All,      QPalette::Window,          bgColor);
+    palette.setColor(QPalette::All,      QPalette::WindowText,      fgColor);
     palette.setColor(QPalette::All,      QPalette::Base,            !lightTheme ? QColor("#2C2C2C") : QColor("white"));
     palette.setColor(QPalette::All,      QPalette::AlternateBase,   !lightTheme ? QColor("#292929") : QColor("#ededed"));
     palette.setColor(QPalette::All,      QPalette::ToolTipBase,     QColor("#060606"));
@@ -273,8 +266,8 @@ void Adwaita::polish(QPalette &palette)
 
 
     // Exceptions for an unfocused window
-//    palette.setColor(QPalette::Inactive, QPalette::Window,          !lightTheme ? QColor("#393f3f") : QColor("#e8e8e7"));
-    palette.setColor(QPalette::Inactive, QPalette::WindowText,      !lightTheme ? QColor("#949796") : QColor("#8b8e8f"));
+    palette.setColor(QPalette::Inactive, QPalette::Window,          backdropBgColor);
+    palette.setColor(QPalette::Inactive, QPalette::WindowText,      backdropFgColor);
     palette.setColor(QPalette::Inactive, QPalette::Base,            QColor("#fcfcfc"));
     palette.setColor(QPalette::Inactive, QPalette::AlternateBase,   QColor("#ededed"));
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipBase,     QColor("#ff1234"));
@@ -508,7 +501,7 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
             break;
         }
         case PE_PanelButtonTool: {
-            adwaitaButtonBackground(p, opt->rect.adjusted(1, 1, -2, -2), opt->state, opt->palette, widget, lightTheme);
+            buttonBackground(p, opt->rect.adjusted(1, 1, -2, -2), opt->state, opt->palette, widget);
             break;
         }
         case PE_FrameMenu:
@@ -561,7 +554,7 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
             break;
         }
         case PE_PanelButtonCommand: {
-            adwaitaButtonBackground(p, opt->rect.adjusted(0, 0, -1, -1), opt->state, opt->palette, widget, lightTheme);
+            buttonBackground(p, opt->rect.adjusted(0, 0, -1, -1), opt->state, opt->palette, widget);
             break;
         }
         case PE_PanelLineEdit: {
@@ -1215,7 +1208,7 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
             //QRect popup = subControlRect(control, cbOpt, SC_ComboBoxListBoxPopup).adjusted(0, 0, -1, -1);
 
             p->save();
-            adwaitaButtonBackground(p, frame, opt->state, opt->palette, widget, lightTheme);
+            buttonBackground(p, frame, opt->state, opt->palette, widget);
             if (cbOpt->editable) {
                 p->drawLine(arrow.topLeft(), arrow.bottomLeft());
             }

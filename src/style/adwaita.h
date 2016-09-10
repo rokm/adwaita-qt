@@ -65,6 +65,10 @@ public:
     QSize sizeFromContents(ContentsType ct, const QStyleOption* opt,
                            const QSize& contentsSize,
                            const QWidget* widget = 0) const;
+protected:
+    void buttonBackground(QPainter *p, const QRect &r, QStyle::State s,
+                          const QPalette &palette, const QWidget *w) const;
+
 private:
     bool lightTheme;
 
@@ -77,6 +81,11 @@ private:
     QColor selectedBgColor;
     QColor selectedBorders;
     QColor bordersColor;
+
+    QColor backdropBaseColor;
+    QColor backdropTextColor;
+    QColor backdropBgColor;
+    QColor backdropFgColor;
 };
 
 #endif // ADWAITA_H
