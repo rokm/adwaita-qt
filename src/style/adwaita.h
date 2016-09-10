@@ -80,12 +80,22 @@ private:
     QColor selectedFgColor;
     QColor selectedBgColor;
     QColor selectedBorders;
+    QColor selectedBordersColor;
     QColor bordersColor;
 
     QColor backdropBaseColor;
     QColor backdropTextColor;
     QColor backdropBgColor;
     QColor backdropFgColor;
+    QColor backdropInsensitiveColor;
+    QColor backdropSelectedFgColor;
+    QColor backdropBordersColor;
+    QColor backdropDarkFill;
+    QColor backdropSidebarBgColor;
+
+    QColor insensitiveFgColor;
+    QColor insensitiveBgColor;
+    QColor insensitiveBordersColor;
 };
 
 #endif // ADWAITA_H

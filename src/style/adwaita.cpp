@@ -137,18 +137,33 @@ static void unaliasedRoundedRect(QPainter *p, const QRect &r, qreal xRadius, qre
 
 static QColor blendColors(const QColor &color1, const QColor &color2, qreal ratio)
 {
-    double r = color1.redF()*(1-ratio) + color2.redF()*ratio;
-    double g = color1.greenF()*(1-ratio) + color2.greenF()*ratio;
-    double b = color1.blueF()*(1-ratio) + color2.blueF()*ratio;
+    qreal r = ratio*color1.redF()   + (1-ratio)*color2.redF();
+    qreal g = ratio*color1.greenF() + (1-ratio)*color2.greenF();
+    qreal b = ratio*color1.blueF()  + (1-ratio)*color2.blueF();
 
     return QColor::fromRgbF(r, g, b);
 }
+
+static QColor darken(const QColor &color1, int amount)
+{
+    qreal h, s, l, a;
+    color1.getHslF(&h, &s, &l, &a);
+    return QColor::fromHslF(h, s, l - amount/100.0, a).convertTo(color1.spec());
+}
+
+static QColor lighten(const QColor &color1, int amount)
+{
+    qreal h, s, l, a;
+    color1.getHslF(&h, &s, &l, &a);
+    return QColor::fromHslF(h, s, l + amount/100.0, a).convertTo(color1.spec());
+}
+
 
 Adwaita::Adwaita(bool lightVariant)
     : QCommonStyle(),
       lightTheme(lightVariant)
 {
-    // Initialize colors
+    // *** Initialize colors ***
     // These definitions are taken from _colors.scss of Gtk's Adwaita sources
     baseColor = lightTheme ? QColor("#ffffff") : QColor("#292929");
     textColor = lightTheme ? QColor("black") : QColor("white");
@@ -156,58 +171,96 @@ Adwaita::Adwaita(bool lightVariant)
     fgColor = lightTheme ? QColor("#2e3436") : QColor("#eeeeec");
 
     selectedFgColor = QColor("#ffffff");
-    selectedBgColor = lightTheme ? QColor("#4a90d9") : QColor("#4a90d9").darker(120);
-    selectedBorders = lightTheme ? selectedBgColor.darker(130) : selectedBgColor.darker(120);
-    bordersColor = lightTheme ? bgColor.darker(130) : bgColor.darker(120);
+    selectedBgColor = lightTheme ? QColor("#4a90d9") : darken(QColor("#4a90d9"), 20);
+    selectedBorders = lightTheme ? darken(selectedBgColor, 30) : darken(selectedBgColor, 20);
+    selectedBordersColor = lightTheme ? darken(selectedBgColor, 30) : darken(selectedBgColor, 20);
 
-    backdropBaseColor = lightTheme ? baseColor.darker(101) : baseColor.lighter(101);
-    backdropTextColor = blendColors(textColor, backdropBaseColor, 0.80);
+    bordersColor = lightTheme ? darken(bgColor, 30) : darken(bgColor, 12);
+
+    // Insensitive state derived colors
+    insensitiveFgColor = blendColors(fgColor, bgColor, 0.5);
+    insensitiveBgColor = blendColors(bgColor, baseColor, 0.6);
+    insensitiveBordersColor = bordersColor;
+
+    // Colors for backdrop state, derived from the main colors.
+    backdropBaseColor = lightTheme ? darken(baseColor, 1) : lighten(baseColor, 1);
+    backdropTextColor = blendColors(textColor, backdropBaseColor, 0.8);
     backdropBgColor = bgColor;
-    backdropFgColor = blendColors(fgColor, backdropBgColor, 0.50);
-
-    /*qInfo() << "Base color:" << baseColor.name();
-    qInfo() << "Text color:" << textColor.name();
-    qInfo() << "BG color:" << bgColor.name();
-    qInfo() << "FG color:" << fgColor.name();
-    qInfo() << "";
-    qInfo() << "Selected FG color:" << selectedFgColor.name();
-    qInfo() << "Selected BG color:" << selectedBgColor.name();
-    qInfo() << "Selected borders color:" << selectedBorders.name();
-    qInfo() << "Borders color:" << bordersColor.name();
-    qInfo() << "";
-    qInfo() << "Backdrop base color:" << backdropBaseColor.name();
-    qInfo() << "Backdrop text color:" << backdropTextColor.name();
-    qInfo() << "Backdrop BG color:" << backdropBgColor.name();
-    qInfo() << "Backdrop FG color:" << backdropFgColor.name();*/
+    backdropFgColor = blendColors(fgColor, backdropBgColor, 0.5);
+    backdropInsensitiveColor = lightTheme ? darken(backdropBgColor, 15) : lighten(backdropBgColor, 15);
+    backdropSelectedFgColor = lightTheme ? backdropBaseColor : backdropTextColor;
+    backdropBordersColor = blendColors(bordersColor, bgColor, 0.9);
+    backdropDarkFill = blendColors(backdropBordersColor, backdropBgColor, 0.35);
+    backdropSidebarBgColor = blendColors(backdropBgColor, backdropBaseColor, 0.50);
 }
 
 void Adwaita::buttonBackground(QPainter *p, const QRect &r, QStyle::State s, const QPalette &palette, const QWidget *w) const
 {
     p->save();
-    p->setPen(bordersColor); // Border color
     QLinearGradient buttonGradient(0.0, r.top(), 0.0, r.bottom());
-    if (s & QStyle::State_Active && s & QStyle::State_Enabled) {
-        if(s & QStyle::State_On || s & QStyle::State_Sunken) {
-            buttonGradient.setColorAt(0.0, QColor("#a8a8a8"));
-            buttonGradient.setColorAt(0.05, QColor("#c0c0c0"));
-            buttonGradient.setColorAt(0.15, QColor("#d6d6d6"));
-        }
-        else if (s & QStyle::State_MouseOver) {
-            buttonGradient.setColorAt(0.0, QColor("white"));
-            buttonGradient.setColorAt(0.4, QColor("#f7f7f7"));
-            buttonGradient.setColorAt(1.0, QColor("#ededed"));
-        }
-        else {
-            buttonGradient.setColorAt(0.0, QColor("#fafafa"));
-            buttonGradient.setColorAt(1.0, QColor("#e0e0e0"));
+
+    if (s & QStyle::State_Active) {
+        if (s & QStyle::State_Enabled) {
+            p->setPen(bordersColor); // Border color
+            if(s & QStyle::State_On || s & QStyle::State_Sunken) {
+                // active
+                buttonGradient.setColorAt(0.0, lightTheme ? darken(bgColor, 13) : darken(bgColor, 9));
+                buttonGradient.setColorAt(1.0, lightTheme ? darken(bgColor,  5) : darken(bgColor, 5));
+            }
+            else if (s & QStyle::State_MouseOver) {
+                // hover
+                buttonGradient.setColorAt(0.0, lightTheme ? lighten(bgColor, 6) : lighten(bgColor, 1));
+                buttonGradient.setColorAt(0.6, lightTheme ? bgColor : darken(bgColor, 2));
+                buttonGradient.setColorAt(1.0, darken(bgColor, 4));
+            }
+            else {
+                // normal
+                buttonGradient.setColorAt(0.0, lightTheme ? bgColor : darken(bgColor, 2));
+                buttonGradient.setColorAt(0.6, darken(bgColor, 4));
+                buttonGradient.setColorAt(1.0, lightTheme ? darken(bgColor, 10) : darken(bgColor, 6));
+            }
+        } else {
+            p->setPen(insensitiveBordersColor); // Border color
+            if(s & QStyle::State_On || s & QStyle::State_Sunken) {
+                // insensitive-active
+                buttonGradient.setColorAt(0.0, insensitiveBgColor);
+                buttonGradient.setColorAt(1.0, insensitiveBgColor);
+            }
+            else {
+                // insensitive
+                buttonGradient.setColorAt(0.0, insensitiveBgColor);
+                buttonGradient.setColorAt(1.0, insensitiveBgColor);
+            }
         }
     }
     else {
-        if (s & QStyle::State_On || s & QStyle::State_Sunken)
-            buttonGradient.setColorAt(0.0, palette.mid().color());
-        else
-            buttonGradient.setColorAt(0.0, palette.button().color());
+        p->setPen(backdropBordersColor); // Border color
+        if (s & QStyle::State_Enabled) {
+            if(s & QStyle::State_On || s & QStyle::State_Sunken) {
+                // backdrop-active
+                buttonGradient.setColorAt(0.0, backdropDarkFill);
+                buttonGradient.setColorAt(1.0, backdropDarkFill);
+            }
+            else {
+                // backdrop
+                buttonGradient.setColorAt(0.0, backdropBgColor);
+                buttonGradient.setColorAt(1.0, backdropBgColor);
+            }
+        }
+        else {
+            if(s & QStyle::State_On || s & QStyle::State_Sunken) {
+                // backdrop-insensitive-active
+                buttonGradient.setColorAt(0.0, darken(insensitiveBgColor, 5));
+                buttonGradient.setColorAt(1.0, darken(insensitiveBgColor, 5));
+            }
+            else {
+                // backdrop-insensitive
+                buttonGradient.setColorAt(0.0, insensitiveBgColor);
+                buttonGradient.setColorAt(1.0, insensitiveBgColor);
+            }
+        }
     }
+
     p->setBrush(QBrush(buttonGradient));
     unaliasedRoundedRect(p, r, 3, 3);
     p->restore();
