@@ -83,6 +83,8 @@ private:
     QColor selectedBordersColor;
     QColor bordersColor;
 
+    QColor baseHoverColor;
+
     QColor backdropBaseColor;
     QColor backdropTextColor;
     QColor backdropBgColor;

@@ -158,6 +158,14 @@ static QColor lighten(const QColor &color1, int amount)
     return QColor::fromHslF(h, s, l + amount/100.0, a).convertTo(color1.spec());
 }
 
+static QColor transparentize(const QColor &color1, qreal amount)
+{
+    QColor color2 = color1;
+    qreal alpha = qBound(0.0, color1.alphaF() - amount, 1.0);
+    color2.setAlphaF(alpha);
+    return color2;
+}
+
 
 Adwaita::Adwaita(bool lightVariant)
     : QCommonStyle(),
@@ -176,6 +184,8 @@ Adwaita::Adwaita(bool lightVariant)
     selectedBordersColor = lightTheme ? darken(selectedBgColor, 30) : darken(selectedBgColor, 20);
 
     bordersColor = lightTheme ? darken(bgColor, 30) : darken(bgColor, 12);
+
+    baseHoverColor = transparentize(fgColor, 0.95);
 
     // Insensitive state derived colors
     insensitiveFgColor = blendColors(fgColor, bgColor, 0.5);
@@ -1224,11 +1234,12 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
             if (sbOpt->subControls & (SC_SpinBoxEditField) && sbOpt->subControls & SC_SpinBoxDown)
             p->drawLine(down.topLeft() + QPoint(0, 1), down.bottomLeft());
 
+            // Spin buttons
             p->setPen(Qt::NoPen);
             if (opt->state & State_MouseOver)
-                p->setBrush(QColor("#f0f0f0"));
+                p->setBrush(baseHoverColor);
             if (opt->state & State_Sunken)
-                p->setBrush(QColor("#e1e1e1"));
+                p->setBrush(transparentize(Qt::black, 0.9));
             if (opt->state & State_Enabled && opt->activeSubControls == SC_SpinBoxDown && sbOpt->stepEnabled & QAbstractSpinBox::StepDownEnabled) {
                 p->drawRect(down.adjusted(1, 1, 1, 0));
             }
@@ -1240,6 +1251,7 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
                 p->drawPath(path);
             }
 
+            // Spin button indicators
             QStyleOptionSpinBox optCopy(*sbOpt);
             optCopy.rect = up;
             if (!(sbOpt->stepEnabled & QAbstractSpinBox::StepUpEnabled))
