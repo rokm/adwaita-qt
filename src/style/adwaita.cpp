@@ -166,7 +166,10 @@ static void adwaitaButtonBackground(QPainter *p, const QRect &r, QStyle::State s
     p->restore();
 }
 
-Adwaita::Adwaita() : QCommonStyle() {
+Adwaita::Adwaita(bool dark)
+    : QCommonStyle(),
+      darkTheme(dark)
+{
 }
 /*
 void Adwaita::polish(QPalette &palette)

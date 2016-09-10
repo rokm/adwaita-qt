@@ -35,7 +35,7 @@ class Adwaita : public QCommonStyle
     Q_OBJECT
 
 public:
-    Adwaita();
+    Adwaita(bool dark);
 
     void polish(QPalette &palette);
     void polish(QWidget *widget);
@@ -66,6 +66,7 @@ public:
                            const QSize& contentsSize,
                            const QWidget* widget = 0) const;
 private:
+    bool darkTheme;
 };
 
 #endif // ADWAITA_H

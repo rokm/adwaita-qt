@@ -26,12 +26,14 @@ StylePlugin::StylePlugin(QObject* parent)
 
 QStyle* StylePlugin::create(const QString& key) {
     if (key.toLower() == "adwaita")
-        return new Adwaita;
+        return new Adwaita(false);
+    else if (key.toLower() == "adwaita-dark")
+        return new Adwaita(true);
     return nullptr;
 }
 
 QStringList StylePlugin::keys() const {
-    return QStringList() << "adwaita";
+    return QStringList() << "adwaita" << "adwaita-dark";
 }
 
 #if QT_VERSION < 0x050000
