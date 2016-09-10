@@ -175,8 +175,8 @@ Adwaita::Adwaita(bool dark)
 void Adwaita::polish(QPalette &palette)
 {
     // All, used especially for active elements in a focused window
-    palette.setColor(QPalette::All,      QPalette::Window,          darkTheme ? QColor("#393F3F") : QColor("#ededed"));
-    palette.setColor(QPalette::All,      QPalette::WindowText,      darkTheme ? QColor("#EEEEEC") : QColor("#2e3436"));
+    palette.setColor(QPalette::All,      QPalette::Window,          darkTheme ? QColor("#393f3f") : QColor("#e8e8e7"));
+    palette.setColor(QPalette::All,      QPalette::WindowText,      darkTheme ? QColor("#eeeeec") : QColor("#2e3436"));
     palette.setColor(QPalette::All,      QPalette::Base,            darkTheme ? QColor("#2C2C2C") : QColor("white"));
     palette.setColor(QPalette::All,      QPalette::AlternateBase,   darkTheme ? QColor("#292929") : QColor("#ededed"));
     palette.setColor(QPalette::All,      QPalette::ToolTipBase,     QColor("#060606"));
@@ -224,8 +224,8 @@ void Adwaita::polish(QPalette &palette)
 
 
     // Exceptions for an unfocused window
-//    palette.setColor(QPalette::Inactive, QPalette::Window,          QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::WindowText,      QColor("#54595a"));
+//    palette.setColor(QPalette::Inactive, QPalette::Window,          darkTheme ? QColor("#393f3f") : QColor("#e8e8e7"));
+    palette.setColor(QPalette::Inactive, QPalette::WindowText,      darkTheme ? QColor("#949796") : QColor("#8b8e8f"));
     palette.setColor(QPalette::Inactive, QPalette::Base,            QColor("#fcfcfc"));
     palette.setColor(QPalette::Inactive, QPalette::AlternateBase,   QColor("#ededed"));
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipBase,     QColor("#ff1234"));
