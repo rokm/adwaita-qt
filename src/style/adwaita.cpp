@@ -171,102 +171,25 @@ Adwaita::Adwaita(bool dark)
       darkTheme(dark)
 {
 }
-/*
-void Adwaita::polish(QPalette &palette)
-{
-    // All, used especially for active elements in a focused window
-    palette.setColor(QPalette::All,      QPalette::Window,          QColor("#ededed"));
-    palette.setColor(QPalette::All,      QPalette::WindowText,      QColor("#2e3436"));
-    palette.setColor(QPalette::All,      QPalette::Base,            QColor("white"));
-    palette.setColor(QPalette::All,      QPalette::AlternateBase,   QColor("#ededed"));
-    palette.setColor(QPalette::All,      QPalette::ToolTipBase,     QColor("#060606"));
-    palette.setColor(QPalette::All,      QPalette::ToolTipText,     QColor("white"));
-    palette.setColor(QPalette::All,      QPalette::Text,            QColor("#2e3436"));
-    palette.setColor(QPalette::All,      QPalette::Button,          QColor("#e0e0e0"));
-    palette.setColor(QPalette::All,      QPalette::ButtonText,      QColor("#2e3436"));
-    palette.setColor(QPalette::All,      QPalette::BrightText,      QColor("white"));
-
-    palette.setColor(QPalette::All,      QPalette::Light,           QColor("#fafafa"));
-    palette.setColor(QPalette::All,      QPalette::Midlight,        QColor("#f3f3f3"));
-    palette.setColor(QPalette::All,      QPalette::Dark,            QColor("#e0e0e0"));
-    palette.setColor(QPalette::All,      QPalette::Mid,             QColor("#d4d4d4"));
-    palette.setColor(QPalette::All,      QPalette::Shadow,          QColor("black"));
-
-    palette.setColor(QPalette::All,      QPalette::Highlight,       QColor("#4a90d9"));
-    palette.setColor(QPalette::All,      QPalette::HighlightedText, QColor("white"));
-
-    palette.setColor(QPalette::All,      QPalette::Link,            QColor("#2a76c6"));
-    palette.setColor(QPalette::All,      QPalette::LinkVisited,     QColor("#2a76c6"));
-
-    // Exceptions for disabled elements in a focused window
-    palette.setColor(QPalette::Disabled, QPalette::Window,          QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::WindowText,      QColor("#8d9091"));
-    palette.setColor(QPalette::Disabled, QPalette::Base,            QColor("white"));
-    palette.setColor(QPalette::Disabled, QPalette::AlternateBase,   QColor("#ededed"));
-//     palette.setColor(QPalette::Disabled, QPalette::ToolTipBase,     QColor("#ff1234"));
-//     palette.setColor(QPalette::Disabled, QPalette::ToolTipText,     QColor("#ff1234"));
-    palette.setColor(QPalette::Disabled, QPalette::Text,            QColor("#8d9091"));
-    palette.setColor(QPalette::Disabled, QPalette::Button,          QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::ButtonText,      QColor("#8d9091"));
-    palette.setColor(QPalette::Disabled, QPalette::BrightText,      QColor("#ededed"));
-
-    palette.setColor(QPalette::Disabled, QPalette::Light,           QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::Midlight,        QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::Dark,            QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::Mid,             QColor("#e8e8e8"));
-    palette.setColor(QPalette::Disabled, QPalette::Shadow,          QColor("black"));
-
-    palette.setColor(QPalette::Disabled, QPalette::Highlight,       QColor("#4a90d9"));
-    palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor("white"));
-
-    palette.setColor(QPalette::Disabled, QPalette::Link,            QColor("#4a90d9"));
-    palette.setColor(QPalette::Disabled, QPalette::LinkVisited,     QColor("#4a90d9"));
-
-
-    // Exceptions for an unfocused window
-    palette.setColor(QPalette::Inactive, QPalette::Window,          QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::WindowText,      QColor("#54595a"));
-    palette.setColor(QPalette::Inactive, QPalette::Base,            QColor("#fcfcfc"));
-    palette.setColor(QPalette::Inactive, QPalette::AlternateBase,   QColor("#ededed"));
-//     palette.setColor(QPalette::Inactive, QPalette::ToolTipBase,     QColor("#ff1234"));
-//     palette.setColor(QPalette::Inactive, QPalette::ToolTipText,     QColor("#ff1234"));
-    palette.setColor(QPalette::Inactive, QPalette::Text,            QColor("#54595a"));
-    palette.setColor(QPalette::Inactive, QPalette::Button,          QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::ButtonText,      QColor("#54595a"));
-    palette.setColor(QPalette::Inactive, QPalette::BrightText,      QColor("#ededed"));
-
-    palette.setColor(QPalette::Inactive, QPalette::Light,           QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::Midlight,        QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::Dark,            QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::Mid,             QColor("#e0e0e0"));
-    palette.setColor(QPalette::Inactive, QPalette::Shadow,          QColor("black"));
-
-    palette.setColor(QPalette::Inactive, QPalette::Highlight,       QColor("#4a90d9"));
-    palette.setColor(QPalette::Inactive, QPalette::HighlightedText, QColor("white"));
-
-    palette.setColor(QPalette::Inactive, QPalette::Link,            QColor("#4a90d9"));
-    palette.setColor(QPalette::Inactive, QPalette::LinkVisited,     QColor("#4a90d9"));
-}
-*/
 
 void Adwaita::polish(QPalette &palette)
 {
     // All, used especially for active elements in a focused window
-    palette.setColor(QPalette::All,      QPalette::Window,          QColor("#393F3F"));
-    palette.setColor(QPalette::All,      QPalette::WindowText,      QColor("#EEEEEC"));
-    palette.setColor(QPalette::All,      QPalette::Base,            QColor("#2C2C2C"));
-    palette.setColor(QPalette::All,      QPalette::AlternateBase,   QColor("#292929"));
+    palette.setColor(QPalette::All,      QPalette::Window,          darkTheme ? QColor("#393F3F") : QColor("#ededed"));
+    palette.setColor(QPalette::All,      QPalette::WindowText,      darkTheme ? QColor("#EEEEEC") : QColor("#2e3436"));
+    palette.setColor(QPalette::All,      QPalette::Base,            darkTheme ? QColor("#2C2C2C") : QColor("white"));
+    palette.setColor(QPalette::All,      QPalette::AlternateBase,   darkTheme ? QColor("#292929") : QColor("#ededed"));
     palette.setColor(QPalette::All,      QPalette::ToolTipBase,     QColor("#060606"));
     palette.setColor(QPalette::All,      QPalette::ToolTipText,     QColor("white"));
-    palette.setColor(QPalette::All,      QPalette::Text,            QColor("#EEEEEC"));
-    palette.setColor(QPalette::All,      QPalette::Button,          QColor("#363C3C"));
-    palette.setColor(QPalette::All,      QPalette::ButtonText,      QColor("#EEEEEC"));
-    palette.setColor(QPalette::All,      QPalette::BrightText,      QColor("black"));
+    palette.setColor(QPalette::All,      QPalette::Text,            darkTheme ? QColor("#EEEEEC") : QColor("#2e3436"));
+    palette.setColor(QPalette::All,      QPalette::Button,          darkTheme ? QColor("#363C3C") : QColor("#e0e0e0"));
+    palette.setColor(QPalette::All,      QPalette::ButtonText,      darkTheme ? QColor("#EEEEEC") : QColor("#2e3436"));
+    palette.setColor(QPalette::All,      QPalette::BrightText,      darkTheme ? QColor("black") : QColor("white"));
 
-    palette.setColor(QPalette::All,      QPalette::Light,           QColor("#080808"));
-    palette.setColor(QPalette::All,      QPalette::Midlight,        QColor("#272828"));
-    palette.setColor(QPalette::All,      QPalette::Dark,            QColor("#e0e0e0"));
-    palette.setColor(QPalette::All,      QPalette::Mid,             QColor("#2B2B2B"));
+    palette.setColor(QPalette::All,      QPalette::Light,           darkTheme ? QColor("#080808") : QColor("#fafafa"));
+    palette.setColor(QPalette::All,      QPalette::Midlight,        darkTheme ? QColor("#272828") : QColor("#f3f3f3"));
+    palette.setColor(QPalette::All,      QPalette::Dark,            darkTheme ? QColor("#e0e0e0") : QColor("#e0e0e0"));
+    palette.setColor(QPalette::All,      QPalette::Mid,             darkTheme ? QColor("#2B2B2B") : QColor("#d4d4d4"));
     palette.setColor(QPalette::All,      QPalette::Shadow,          QColor("black"));
 
     palette.setColor(QPalette::All,      QPalette::Highlight,       QColor("#4a90d9"));
