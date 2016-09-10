@@ -224,7 +224,7 @@ void Adwaita::polish(QPalette &palette)
 
 
     // Exceptions for an unfocused window
-    palette.setColor(QPalette::Inactive, QPalette::Window,          QColor("#ededed"));
+//    palette.setColor(QPalette::Inactive, QPalette::Window,          QColor("#ededed"));
     palette.setColor(QPalette::Inactive, QPalette::WindowText,      QColor("#54595a"));
     palette.setColor(QPalette::Inactive, QPalette::Base,            QColor("#fcfcfc"));
     palette.setColor(QPalette::Inactive, QPalette::AlternateBase,   QColor("#ededed"));
