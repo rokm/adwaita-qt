@@ -207,10 +207,10 @@ Adwaita::Adwaita(bool lightVariant)
 void Adwaita::buttonBackground(QPainter *p, const QRect &r, QStyle::State s, const QPalette &palette, const QWidget *w) const
 {
     p->save();
-    QLinearGradient buttonGradient(0.0, r.top(), 0.0, r.bottom());
 
     if (s & QStyle::State_Active) {
         if (s & QStyle::State_Enabled) {
+            QLinearGradient buttonGradient(0.0, r.top(), 0.0, r.bottom());
             p->setPen(bordersColor); // Border color
             if(s & QStyle::State_On || s & QStyle::State_Sunken) {
                 // active
@@ -229,17 +229,17 @@ void Adwaita::buttonBackground(QPainter *p, const QRect &r, QStyle::State s, con
                 buttonGradient.setColorAt(0.6, darken(bgColor, 4));
                 buttonGradient.setColorAt(1.0, lightTheme ? darken(bgColor, 10) : darken(bgColor, 6));
             }
+
+            p->setBrush(QBrush(buttonGradient));
         } else {
             p->setPen(insensitiveBordersColor); // Border color
             if(s & QStyle::State_On || s & QStyle::State_Sunken) {
                 // insensitive-active
-                buttonGradient.setColorAt(0.0, insensitiveBgColor);
-                buttonGradient.setColorAt(1.0, insensitiveBgColor);
+                p->setBrush(insensitiveBgColor);
             }
             else {
                 // insensitive
-                buttonGradient.setColorAt(0.0, insensitiveBgColor);
-                buttonGradient.setColorAt(1.0, insensitiveBgColor);
+                p->setBrush(insensitiveBgColor);
             }
         }
     }
@@ -248,30 +248,25 @@ void Adwaita::buttonBackground(QPainter *p, const QRect &r, QStyle::State s, con
         if (s & QStyle::State_Enabled) {
             if(s & QStyle::State_On || s & QStyle::State_Sunken) {
                 // backdrop-active
-                buttonGradient.setColorAt(0.0, backdropDarkFill);
-                buttonGradient.setColorAt(1.0, backdropDarkFill);
+                p->setBrush(backdropDarkFill);
             }
             else {
                 // backdrop
-                buttonGradient.setColorAt(0.0, backdropBgColor);
-                buttonGradient.setColorAt(1.0, backdropBgColor);
+                p->setBrush(backdropBgColor);
             }
         }
         else {
             if(s & QStyle::State_On || s & QStyle::State_Sunken) {
                 // backdrop-insensitive-active
-                buttonGradient.setColorAt(0.0, darken(insensitiveBgColor, 5));
-                buttonGradient.setColorAt(1.0, darken(insensitiveBgColor, 5));
+                p->setBrush(darken(insensitiveBgColor, 5));
             }
             else {
                 // backdrop-insensitive
-                buttonGradient.setColorAt(0.0, insensitiveBgColor);
-                buttonGradient.setColorAt(1.0, insensitiveBgColor);
+                p->setBrush(insensitiveBgColor);
             }
         }
     }
 
-    p->setBrush(QBrush(buttonGradient));
     unaliasedRoundedRect(p, r, 3, 3);
     p->restore();
 }
@@ -626,30 +621,50 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
             }
             QRect rect = opt->rect.adjusted(0, 0, -1, -1);
             p->save();
-            QLinearGradient shadowGradient(0.0, 0.0, 0.0, 1.0);
-            QLinearGradient backgroundGradient(0.0, 0.0, 0.0, 1.0);
-            shadowGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-            shadowGradient.setColorAt(0.0, QColor("#d4d4d4"));
-            shadowGradient.setColorAt(1.0/(rect.height()+1)*4, Qt::transparent);
-            backgroundGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-            backgroundGradient.setColorAt(0.0, opt->palette.mid().color());
-            backgroundGradient.setColorAt(1.0/(rect.height()+1)*4, opt->palette.midlight().color());
-            p->setBrush(QBrush(backgroundGradient));
-            if (opt->state & State_HasFocus) {
-                p->setPen(opt->palette.highlight().color());
+
+            // Background
+            if (opt->state & State_Active) {
+                p->setPen(bordersColor);
+                if (opt->state & State_Enabled) {
+                    // normal
+                    QLinearGradient backgroundGradient(0.0, 0.0, 0.0, 1.0);
+                    backgroundGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+
+                    if (lightTheme) {
+                        backgroundGradient.setColorAt(0.0, blendColors(bordersColor, baseColor, 0.45));
+                        backgroundGradient.setColorAt(2.0/(rect.height()+1), blendColors(bordersColor, baseColor, 0.03)); // 2px
+                        backgroundGradient.setColorAt(0.9, baseColor);
+                    } else {
+                        backgroundGradient.setColorAt(0.0, blendColors(bordersColor, baseColor, 0.45));
+                        backgroundGradient.setColorAt(3.0/(rect.height()+1), blendColors(bordersColor, baseColor,  0.03)); // 3px
+                        backgroundGradient.setColorAt(0.9, baseColor);
+                    }
+
+                    p->setBrush(QBrush(backgroundGradient));
+                } else {
+                    // insensitive
+                    p->setBrush(insensitiveBgColor);
+                }
             }
             else {
-                p->setPen(QColor("#a1a1a1"));
+                p->setPen(backdropBordersColor); // Border color
+                if (opt->state & State_Enabled) {
+                    // backdrop
+                    p->setBrush(backdropBaseColor);
+                }
+                else {
+                    // backdrop-insensitive
+                    p->setBrush(backdropBgColor);
+                }
             }
+
+            if (opt->state & State_HasFocus) {
+                // focus
+                p->setPen(opt->palette.highlight().color());
+            }
+
             unaliasedRoundedRect(p, rect, 3, 3);
-            if (opt->state & State_Active && opt->state & State_Enabled) {
-                //p->setBrush(QBrush(shadowGradient));
-                //unaliasedRoundedRect(p, rect, 3, 3);
-            }
-            else if (!(opt->state & State_Enabled)) {
-                p->setBrush(opt->palette.button());
-                unaliasedRoundedRect(p, rect, 3, 3);
-            }
+
             p->restore();
             break;
         }
