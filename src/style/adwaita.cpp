@@ -472,7 +472,33 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
         case PE_IndicatorSpinPlus:
         case PE_IndicatorSpinUp: {
             p->save();
-            p->setPen(opt->palette.windowText().color());
+            if (opt->state & State_Active) {
+                if (opt->state & State_Enabled) {
+                    if (opt->state & State_MouseOver) {
+                        // hover
+                        p->setPen(fgColor);
+                    }
+                    else {
+                        // normal
+                        p->setPen(blendColors(fgColor, baseColor, 0.9));
+                    }
+                }
+                else {
+                    // insensitive
+                    p->setPen(transparentize(insensitiveFgColor, 0.7));
+                }
+            }
+            else {
+                if (opt->state & State_Enabled) {
+                    // backdrop
+                    p->setPen(blendColors(backdropFgColor, backdropBaseColor, 0.9));
+                }
+                else {
+                    // backdrop-insensitive
+                    p->setPen(transparentize(backdropInsensitiveColor, 0.7));
+
+                }
+            }
             p->drawRect(QRect(opt->rect.center() - QPoint(3, -1), opt->rect.center() + QPoint(5, 1)));
             if (element == PE_IndicatorSpinPlus || element == PE_IndicatorSpinUp)
                 p->drawRect(QRect(opt->rect.center() - QPoint(-1, 3), opt->rect.center() + QPoint(1, 5)));
@@ -654,7 +680,7 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
                 }
                 else {
                     // backdrop-insensitive
-                    p->setBrush(backdropBgColor);
+                    p->setBrush(insensitiveBgColor);
                 }
             }
 
@@ -1225,29 +1251,17 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
             QRect down = subControlRect(control, sbOpt, SC_SpinBoxDown).adjusted(0, 0, -1, -1);
             //QRect edit = subControlRect(control, sbOpt, SC_SpinBoxEditField).adjusted(0, 0, -1, -1);
             p->save();
-            if (sbOpt->state & State_HasFocus)
-                p->setPen(sbOpt->palette.highlight().color());
-            else
-                p->setPen("#a8a8a8");
-            QLinearGradient backgroundGradient(0.0, 0.0, 0.0, 1.0);
-            backgroundGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-            backgroundGradient.setColorAt(0.0, QColor("#f3f3f3"));
-            backgroundGradient.setColorAt(1.0/(frame.height()+1)*16, Qt::white);
-            p->setBrush(QBrush(backgroundGradient));
-            unaliasedRoundedRect(p, frame, 3, 3);
-            if (opt->state & State_Enabled && opt->state & State_Active) {
-                QLinearGradient shadowGradient(0.0, 0.0, 0.0, 1.0);
-                shadowGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-                shadowGradient.setColorAt(0.0, QColor("#d4d4d4"));
-                shadowGradient.setColorAt(1.0/(frame.height()+1)*4, Qt::transparent);
-                p->setBrush(QBrush(shadowGradient));
-                unaliasedRoundedRect(p, frame, 3, 3);
-            }
-            p->setPen("#d6d6d6");
+
+            // Use line edit as base (for whole widget, not just the
+            // edit part!)
+            drawPrimitive(PE_PanelLineEdit, opt, p, widget);
+
+            // Delimiter lines
+            p->setPen(transparentize(bordersColor, 0.7));
             if (sbOpt->subControls & (SC_SpinBoxEditField | SC_SpinBoxDown )&& sbOpt->subControls & SC_SpinBoxUp)
                 p->drawLine(up.topLeft() + QPoint(0, 1), up.bottomLeft());
             if (sbOpt->subControls & (SC_SpinBoxEditField) && sbOpt->subControls & SC_SpinBoxDown)
-            p->drawLine(down.topLeft() + QPoint(0, 1), down.bottomLeft());
+                p->drawLine(down.topLeft() + QPoint(0, 1), down.bottomLeft());
 
             // Spin buttons
             p->setPen(Qt::NoPen);
@@ -1266,17 +1280,20 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
                 p->drawPath(path);
             }
 
-            // Spin button indicators
+            // Spin button indicator: up
             QStyleOptionSpinBox optCopy(*sbOpt);
             optCopy.rect = up;
             if (!(sbOpt->stepEnabled & QAbstractSpinBox::StepUpEnabled))
-                optCopy.palette.setCurrentColorGroup(QPalette::Disabled);
+                optCopy.state &= ~State_Enabled;
             drawPrimitive(PE_IndicatorSpinUp, &optCopy, p, widget);
+
+            // Spin button indicator: down
             optCopy.rect = down;
-            optCopy.palette.setCurrentColorGroup(opt->palette.currentColorGroup());
+            optCopy.state = sbOpt->state;
             if (!(sbOpt->stepEnabled & QAbstractSpinBox::StepDownEnabled))
-                optCopy.palette.setCurrentColorGroup(QPalette::Disabled);
+                optCopy.state &= ~State_Enabled;
             drawPrimitive(PE_IndicatorSpinDown, &optCopy, p, widget);
+
             p->restore();
             break;
         }
