@@ -464,7 +464,7 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
         case PE_FrameDockWidget:
         case PE_FrameGroupBox: {
             p->save();
-            p->setPen(QColor("#a1a1a1"));
+            p->setPen(opt->state & State_Active ? bordersColor : backdropBordersColor);
             p->setBrush(Qt::transparent);
             p->drawRect(opt->rect.adjusted(0, 0, -1, -1));
             p->restore();
