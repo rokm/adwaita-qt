@@ -432,7 +432,7 @@ int Adwaita::pixelMetric(PixelMetric metric, const QStyleOption *opt, const QWid
         case PM_ScrollBarExtent:
             return 11;
         case PM_SplitterWidth:
-            return 6;
+            return 5;
         case PM_ProgressBarChunkWidth:
             return 0;
         default:
@@ -839,20 +839,21 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
         }
         case CE_Splitter: {
             p->save();
+
             p->setPen(Qt::NoPen);
-            p->setBrush(QColor("#c3c3c3"));
+            p->setBrush((opt->state & State_Active) ? bgColor : backdropBgColor);
             p->drawRect(opt->rect);
-            p->setPen(QColor("#a1a1a1"));
+
+            p->setPen((opt->state & State_Active) ?  bordersColor : backdropBordersColor);
             if (opt->state & State_Horizontal) {
-                p->drawLine(opt->rect.left() + 1, opt->rect.center().y() + 2, opt->rect.right() - 1, opt->rect.center().y() + 2);
-                p->drawLine(opt->rect.left() + 1, opt->rect.center().y() - 2, opt->rect.right() - 1, opt->rect.center().y() - 2);
-                p->drawLine(opt->rect.left() + 1, opt->rect.center().y(), opt->rect.right() - 1, opt->rect.center().y());
+                p->drawLine(opt->rect.topLeft(), opt->rect.bottomLeft());
+                p->drawLine(opt->rect.topRight(), opt->rect.bottomRight());
             }
             else {
-                p->drawLine(opt->rect.center().x() + 2, opt->rect.top() + 1, opt->rect.center().x() + 2, opt->rect.bottom() - 1);
-                p->drawLine(opt->rect.center().x() - 2, opt->rect.top() + 1, opt->rect.center().x() - 2, opt->rect.bottom() - 1);
-                p->drawLine(opt->rect.center().x(), opt->rect.top() + 1, opt->rect.center().x(), opt->rect.bottom() - 1);
+                p->drawLine(opt->rect.topLeft(), opt->rect.topRight());
+                p->drawLine(opt->rect.bottomLeft(), opt->rect.bottomRight());
             }
+
             p->restore();
             break;
         }
