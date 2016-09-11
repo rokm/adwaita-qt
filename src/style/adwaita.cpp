@@ -294,7 +294,7 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::All,      QPalette::Mid,             !lightTheme ? QColor("#2B2B2B") : QColor("#d4d4d4"));
     palette.setColor(QPalette::All,      QPalette::Shadow,          QColor("black"));
 
-    palette.setColor(QPalette::All,      QPalette::Highlight,       QColor("#4a90d9"));
+    palette.setColor(QPalette::All,      QPalette::Highlight,       selectedBgColor);
     palette.setColor(QPalette::All,      QPalette::HighlightedText, QColor("white"));
 
     palette.setColor(QPalette::All,      QPalette::Link,            QColor("#2a76c6"));
@@ -318,7 +318,7 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::Disabled, QPalette::Mid,             QColor("#e8e8e8"));
     palette.setColor(QPalette::Disabled, QPalette::Shadow,          QColor("black"));
 
-    palette.setColor(QPalette::Disabled, QPalette::Highlight,       QColor("#4a90d9"));
+    palette.setColor(QPalette::Disabled, QPalette::Highlight,       selectedBgColor);
     palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor("white"));
 
     palette.setColor(QPalette::Disabled, QPalette::Link,            QColor("#4a90d9"));
@@ -343,7 +343,7 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::Inactive, QPalette::Mid,             QColor("#e0e0e0"));
     palette.setColor(QPalette::Inactive, QPalette::Shadow,          QColor("black"));
 
-    palette.setColor(QPalette::Inactive, QPalette::Highlight,       QColor("#4a90d9"));
+    palette.setColor(QPalette::Inactive, QPalette::Highlight,       selectedBgColor);
     palette.setColor(QPalette::Inactive, QPalette::HighlightedText, QColor("white"));
 
     palette.setColor(QPalette::Inactive, QPalette::Link,            QColor("#4a90d9"));
@@ -771,9 +771,9 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
             QPen underline;
             underline.setWidth(3);
             if (opt->state & State_Selected)
-                underline.setColor(QColor("#4a90d9"));
+                underline.setColor(selectedBgColor);
             else if (opt->state & State_MouseOver)
-                underline.setColor(QColor("#a1a1a1"));
+                underline.setColor(bordersColor);
             else
                 underline.setColor(Qt::transparent);
             p->setPen(underline);
