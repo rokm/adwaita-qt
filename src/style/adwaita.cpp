@@ -437,6 +437,7 @@ int Adwaita::styleHint(StyleHint hint, const QStyleOption *opt, const QWidget *w
 {
     switch (hint) {
         case QStyle::SH_EtchDisabledText:
+            return 0;
         case QStyle::SH_Menu_SloppySubMenus:
         case QStyle::SH_Menu_MouseTracking:
         case QStyle::SH_MenuBar_MouseTracking:
