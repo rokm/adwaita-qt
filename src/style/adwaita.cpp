@@ -285,7 +285,11 @@ void Adwaita::buttonBackground(QPainter *p, const QRect &r, QStyle::State s, con
 
 void Adwaita::polish(QPalette &palette)
 {
+    QColor buttonColor;
+
     // All, used especially for active elements in a focused window
+    buttonColor = lightTheme ? darken(bgColor, 9) : darken(bgColor, 7); // Average button color
+
     palette.setColor(QPalette::All,      QPalette::Window,          bgColor);
     palette.setColor(QPalette::All,      QPalette::WindowText,      fgColor);
     palette.setColor(QPalette::All,      QPalette::Base,            baseColor);
@@ -293,14 +297,14 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::All,      QPalette::ToolTipBase,     QColor("#060606"));
     palette.setColor(QPalette::All,      QPalette::ToolTipText,     QColor("white"));
     palette.setColor(QPalette::All,      QPalette::Text,            fgColor);
-    palette.setColor(QPalette::All,      QPalette::Button,          !lightTheme ? QColor("#363C3C") : QColor("#e0e0e0"));
+    palette.setColor(QPalette::All,      QPalette::Button,          buttonColor);
     palette.setColor(QPalette::All,      QPalette::ButtonText,      fgColor);
     palette.setColor(QPalette::All,      QPalette::BrightText,      !lightTheme ? QColor("black") : QColor("white"));
 
-    palette.setColor(QPalette::All,      QPalette::Light,           !lightTheme ? QColor("#080808") : QColor("#fafafa"));
-    palette.setColor(QPalette::All,      QPalette::Midlight,        !lightTheme ? QColor("#272828") : QColor("#f3f3f3"));
-    palette.setColor(QPalette::All,      QPalette::Dark,            !lightTheme ? QColor("#e0e0e0") : QColor("#e0e0e0"));
-    palette.setColor(QPalette::All,      QPalette::Mid,             !lightTheme ? QColor("#2B2B2B") : QColor("#d4d4d4"));
+    palette.setColor(QPalette::All,      QPalette::Light,           lighten(buttonColor, 10));
+    palette.setColor(QPalette::All,      QPalette::Midlight,        lighten(buttonColor, 5));
+    palette.setColor(QPalette::All,      QPalette::Dark,            darken(buttonColor, 5));
+    palette.setColor(QPalette::All,      QPalette::Mid,             darken(buttonColor, 10));
     palette.setColor(QPalette::All,      QPalette::Shadow,          QColor("black"));
 
     palette.setColor(QPalette::All,      QPalette::Highlight,       selectedBgColor);
@@ -310,6 +314,8 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::All,      QPalette::LinkVisited,     QColor("#2a76c6"));
 
     // Exceptions for disabled elements in a focused window
+    buttonColor = lightTheme ? darken(insensitiveBgColor, 9) : darken(insensitiveBgColor, 7); // Average button color
+
     palette.setColor(QPalette::Disabled, QPalette::Window,          insensitiveBgColor);
     palette.setColor(QPalette::Disabled, QPalette::WindowText,      insensitiveFgColor);
     palette.setColor(QPalette::Disabled, QPalette::Base,            insensitiveBgColor);
@@ -317,14 +323,14 @@ void Adwaita::polish(QPalette &palette)
 //     palette.setColor(QPalette::Disabled, QPalette::ToolTipBase,     QColor("#ff1234"));
 //     palette.setColor(QPalette::Disabled, QPalette::ToolTipText,     QColor("#ff1234"));
     palette.setColor(QPalette::Disabled, QPalette::Text,            insensitiveFgColor);
-    palette.setColor(QPalette::Disabled, QPalette::Button,          QColor("#f4f4f4"));
+    palette.setColor(QPalette::Disabled, QPalette::Button,          buttonColor);
     palette.setColor(QPalette::Disabled, QPalette::ButtonText,      insensitiveFgColor);
     palette.setColor(QPalette::Disabled, QPalette::BrightText,      QColor("#ededed"));
 
-    palette.setColor(QPalette::Disabled, QPalette::Light,           QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::Midlight,        QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::Dark,            QColor("#f4f4f4"));
-    palette.setColor(QPalette::Disabled, QPalette::Mid,             QColor("#e8e8e8"));
+    palette.setColor(QPalette::Disabled, QPalette::Light,           lighten(buttonColor, 10));
+    palette.setColor(QPalette::Disabled, QPalette::Midlight,        lighten(buttonColor, 5));
+    palette.setColor(QPalette::Disabled, QPalette::Dark,            darken(buttonColor, 5));
+    palette.setColor(QPalette::Disabled, QPalette::Mid,             darken(buttonColor, 10));
     palette.setColor(QPalette::Disabled, QPalette::Shadow,          QColor("black"));
 
     palette.setColor(QPalette::Disabled, QPalette::Highlight,       selectedBgColor);
@@ -335,6 +341,8 @@ void Adwaita::polish(QPalette &palette)
 
 
     // Exceptions for an unfocused window
+    buttonColor = lightTheme ? darken(backdropBgColor, 9) : darken(backdropBgColor, 7); // Average button color
+
     palette.setColor(QPalette::Inactive, QPalette::Window,          backdropBgColor);
     palette.setColor(QPalette::Inactive, QPalette::WindowText,      backdropFgColor);
     palette.setColor(QPalette::Inactive, QPalette::Base,            backdropBaseColor);
@@ -342,14 +350,14 @@ void Adwaita::polish(QPalette &palette)
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipBase,     QColor("#ff1234"));
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipText,     QColor("#ff1234"));
     palette.setColor(QPalette::Inactive, QPalette::Text,            backdropFgColor);
-    palette.setColor(QPalette::Inactive, QPalette::Button,          QColor("#ededed"));
+    palette.setColor(QPalette::Inactive, QPalette::Button,          buttonColor);
     palette.setColor(QPalette::Inactive, QPalette::ButtonText,      backdropFgColor);
     palette.setColor(QPalette::Inactive, QPalette::BrightText,      QColor("#ededed"));
 
-    palette.setColor(QPalette::Inactive, QPalette::Light,           QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::Midlight,        QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::Dark,            QColor("#ededed"));
-    palette.setColor(QPalette::Inactive, QPalette::Mid,             QColor("#e0e0e0"));
+    palette.setColor(QPalette::Inactive, QPalette::Light,           lighten(buttonColor, 10));
+    palette.setColor(QPalette::Inactive, QPalette::Midlight,        lighten(buttonColor, 5));
+    palette.setColor(QPalette::Inactive, QPalette::Dark,            darken(buttonColor, 5));
+    palette.setColor(QPalette::Inactive, QPalette::Mid,             darken(buttonColor, 10));
     palette.setColor(QPalette::Inactive, QPalette::Shadow,          QColor("black"));
 
     palette.setColor(QPalette::Inactive, QPalette::Highlight,       selectedBgColor);
