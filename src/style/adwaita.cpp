@@ -36,44 +36,44 @@ enum IconType {
 struct IconEntry {
     uint64_t element;
     uint64_t state;
-    const char *file;
+    const char *basename;
 } iconMap[] {
-    {IT_CheckBox,    0                                                                                     , ADWAITA_ASSET_DIR "/checkbox-unchecked-backdrop-insensitive.png"},
-    {IT_CheckBox,    QStyle::State_Active                                                                  , ADWAITA_ASSET_DIR "/checkbox-unchecked-insensitive.png"},
-    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled                                            , ADWAITA_ASSET_DIR "/checkbox-unchecked.png"},
-    {IT_CheckBox,                         QStyle::State_Enabled                                            , ADWAITA_ASSET_DIR "/checkbox-unchecked-backdrop.png"},
-    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken                       , ADWAITA_ASSET_DIR "/checkbox-unchecked-active.png"},
-    {IT_CheckBox,                                                                          QStyle::State_On, ADWAITA_ASSET_DIR "/checkbox-checked-backdrop-insensitive.png"},
-    {IT_CheckBox,    QStyle::State_Active                                           |      QStyle::State_On, ADWAITA_ASSET_DIR "/checkbox-checked-insensitive.png"},
-    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled                     |      QStyle::State_On, ADWAITA_ASSET_DIR "/checkbox-checked.png"},
-    {IT_CheckBox,                         QStyle::State_Enabled                     |      QStyle::State_On, ADWAITA_ASSET_DIR "/checkbox-checked-backdrop.png"},
-    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|      QStyle::State_On, ADWAITA_ASSET_DIR "/checkbox-checked-active.png"},
-    {IT_CheckBox,                                                                    QStyle::State_NoChange, ADWAITA_ASSET_DIR "/checkbox-mixed-backdrop-insensitive.png"},
-    {IT_CheckBox,    QStyle::State_Active                                           |QStyle::State_NoChange, ADWAITA_ASSET_DIR "/checkbox-mixed-insensitive.png"},
-    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled                     |QStyle::State_NoChange, ADWAITA_ASSET_DIR "/checkbox-mixed.png"},
-    {IT_CheckBox,                         QStyle::State_Enabled                     |QStyle::State_NoChange, ADWAITA_ASSET_DIR "/checkbox-mixed-backdrop.png"},
-    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|QStyle::State_NoChange, ADWAITA_ASSET_DIR "/checkbox-checked-active.png"},
+    {IT_CheckBox,    0                                                                                     , "checkbox-unchecked-backdrop-insensitive"},
+    {IT_CheckBox,    QStyle::State_Active                                                                  , "checkbox-unchecked-insensitive"},
+    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled                                            , "checkbox-unchecked"},
+    {IT_CheckBox,                         QStyle::State_Enabled                                            , "checkbox-unchecked-backdrop"},
+    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken                       , "checkbox-unchecked-active"},
+    {IT_CheckBox,                                                                          QStyle::State_On, "checkbox-checked-backdrop-insensitive"},
+    {IT_CheckBox,    QStyle::State_Active                                           |      QStyle::State_On, "checkbox-checked-insensitive"},
+    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled                     |      QStyle::State_On, "checkbox-checked"},
+    {IT_CheckBox,                         QStyle::State_Enabled                     |      QStyle::State_On, "checkbox-checked-backdrop"},
+    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|      QStyle::State_On, "checkbox-checked-active"},
+    {IT_CheckBox,                                                                    QStyle::State_NoChange, "checkbox-mixed-backdrop-insensitive"},
+    {IT_CheckBox,    QStyle::State_Active                                           |QStyle::State_NoChange, "checkbox-mixed-insensitive"},
+    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled                     |QStyle::State_NoChange, "checkbox-mixed"},
+    {IT_CheckBox,                         QStyle::State_Enabled                     |QStyle::State_NoChange, "checkbox-mixed-backdrop"},
+    {IT_CheckBox,    QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|QStyle::State_NoChange, "checkbox-checked-active"},
 
-    {IT_RadioButton, 0                                                                                     , ADWAITA_ASSET_DIR "/radio-unchecked-backdrop-insensitive.png"},
-    {IT_RadioButton, QStyle::State_Active                                                                  , ADWAITA_ASSET_DIR "/radio-unchecked-insensitive.png"},
-    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled                                            , ADWAITA_ASSET_DIR "/radio-unchecked.png"},
-    {IT_RadioButton,                      QStyle::State_Enabled                                            , ADWAITA_ASSET_DIR "/radio-unchecked-backdrop.png"},
-    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken                       , ADWAITA_ASSET_DIR "/radio-unchecked-active.png"},
-    {IT_RadioButton,                                                                       QStyle::State_On, ADWAITA_ASSET_DIR "/radio-checked-backdrop-insensitive.png"},
-    {IT_RadioButton, QStyle::State_Active                                           |      QStyle::State_On, ADWAITA_ASSET_DIR "/radio-checked-insensitive.png"},
-    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled                     |      QStyle::State_On, ADWAITA_ASSET_DIR "/radio-checked.png"},
-    {IT_RadioButton,                      QStyle::State_Enabled                     |      QStyle::State_On, ADWAITA_ASSET_DIR "/radio-checked-backdrop.png"},
-    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|      QStyle::State_On, ADWAITA_ASSET_DIR "/radio-checked-active.png"},
-    {IT_RadioButton,                                                                 QStyle::State_NoChange, ADWAITA_ASSET_DIR "/radio-mixed-backdrop-insensitive.png"},
-    {IT_RadioButton, QStyle::State_Active                                           |QStyle::State_NoChange, ADWAITA_ASSET_DIR "/radio-mixed-insensitive.png"},
-    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled                     |QStyle::State_NoChange, ADWAITA_ASSET_DIR "/radio-mixed.png"},
-    {IT_RadioButton,                      QStyle::State_Enabled                     |QStyle::State_NoChange, ADWAITA_ASSET_DIR "/radio-mixed-backdrop.png"},
-    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|QStyle::State_NoChange, ADWAITA_ASSET_DIR "/radio-checked-active.png"},
+    {IT_RadioButton, 0                                                                                     , "radio-unchecked-backdrop-insensitive"},
+    {IT_RadioButton, QStyle::State_Active                                                                  , "radio-unchecked-insensitive"},
+    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled                                            , "radio-unchecked"},
+    {IT_RadioButton,                      QStyle::State_Enabled                                            , "radio-unchecked-backdrop"},
+    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken                       , "radio-unchecked-active"},
+    {IT_RadioButton,                                                                       QStyle::State_On, "radio-checked-backdrop-insensitive"},
+    {IT_RadioButton, QStyle::State_Active                                           |      QStyle::State_On, "radio-checked-insensitive"},
+    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled                     |      QStyle::State_On, "radio-checked"},
+    {IT_RadioButton,                      QStyle::State_Enabled                     |      QStyle::State_On, "radio-checked-backdrop"},
+    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|      QStyle::State_On, "radio-checked-active"},
+    {IT_RadioButton,                                                                 QStyle::State_NoChange, "radio-mixed-backdrop-insensitive"},
+    {IT_RadioButton, QStyle::State_Active                                           |QStyle::State_NoChange, "radio-mixed-insensitive"},
+    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled                     |QStyle::State_NoChange, "radio-mixed"},
+    {IT_RadioButton,                      QStyle::State_Enabled                     |QStyle::State_NoChange, "radio-mixed-backdrop"},
+    {IT_RadioButton, QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Sunken|QStyle::State_NoChange, "radio-checked-active"},
 
     {0, 0, 0}
 };
 
-static QPixmap findPixmap(const char *file) {
+static QPixmap findPixmap(const QString &file) {
     QPixmap p;
     if (!QPixmapCache::find(file, &p)) {
         p.load(file);
@@ -82,11 +82,12 @@ static QPixmap findPixmap(const char *file) {
     return p;
 }
 
-static QPixmap findPixmap(uint64_t element, uint64_t state) {
+static QPixmap findPixmap(uint64_t element, uint64_t state, bool lightTheme) {
     IconEntry *e = iconMap;
-    while (e && (e->element || e->state || e->file)) {
+    while (e && (e->element || e->state || e->basename)) {
         if (e->element == element && e->state == state) {
-            return findPixmap(e->file);
+            QString filename = QDir(ADWAITA_ASSET_DIR).absoluteFilePath(QString(e->basename) + (lightTheme ? "" : "-dark") + ".png");
+            return findPixmap(filename);
         }
         e++;
     }
@@ -509,13 +510,13 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
         }
         case PE_IndicatorCheckBox: {
             p->save();
-            p->drawPixmap(opt->rect, findPixmap(IT_CheckBox, opt->state & (State_Active | State_Enabled | State_Sunken | State_NoChange | State_On)));
+            p->drawPixmap(opt->rect, findPixmap(IT_CheckBox, opt->state & (State_Active | State_Enabled | State_Sunken | State_NoChange | State_On), lightTheme));
             p->restore();
             break;
         }
         case PE_IndicatorRadioButton: {
             p->save();
-            p->drawPixmap(opt->rect, findPixmap(IT_RadioButton, opt->state & (State_Active | State_Enabled | State_Sunken | State_NoChange | State_On)));
+            p->drawPixmap(opt->rect, findPixmap(IT_RadioButton, opt->state & (State_Active | State_Enabled | State_Sunken | State_NoChange | State_On), lightTheme));
             p->restore();
             break;
         }
