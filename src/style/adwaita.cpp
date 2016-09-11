@@ -188,6 +188,11 @@ Adwaita::Adwaita(bool lightVariant)
 
     darkFill = blendColors(bordersColor, bgColor, 0.35);
 
+    scrollbarBgColor = lightTheme ? blendColors(bgColor, fgColor, 0.8) : blendColors(baseColor, bgColor, 0.5);
+    scrollbarSliderColor = blendColors(fgColor, bgColor, 0.6);
+    scrollbarSliderHoverColor = blendColors(fgColor, bgColor, 0.8);
+    scrollbarSliderActiveColor = lightTheme ? darken(selectedBgColor, 10) : lighten(selectedBgColor, 10);
+
     baseHoverColor = transparentize(fgColor, 0.95);
 
     // Insensitive state derived colors
@@ -205,6 +210,9 @@ Adwaita::Adwaita(bool lightVariant)
     backdropBordersColor = blendColors(bordersColor, bgColor, 0.9);
     backdropDarkFill = blendColors(backdropBordersColor, backdropBgColor, 0.35);
     backdropSidebarBgColor = blendColors(backdropBgColor, backdropBaseColor, 0.50);
+
+    backdropScrollbarBgColor = darken(backdropBgColor, 3);
+    backdropScrollbarSliderColor = blendColors(backdropFgColor, backdropBgColor, 0.40);
 }
 
 void Adwaita::buttonBackground(QPainter *p, const QRect &r, QStyle::State s, const QPalette &palette, const QWidget *w) const
@@ -1236,13 +1244,31 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
             const QStyleOptionSlider *slOpt = qstyleoption_cast<const QStyleOptionSlider *>(opt);
             QRect slider = subControlRect(CC_ScrollBar, slOpt, SC_ScrollBarSlider).adjusted(2, 2, -2, -2);
             p->save();
+
+            // Widget background
             p->setPen(Qt::NoPen);
-            p->setBrush(slOpt->palette.dark());
+            p->setBrush((slOpt->state & State_Active) ? scrollbarBgColor : backdropScrollbarBgColor);
             p->drawRect(slOpt->rect);
-            p->setBrush(QColor("#b3b5b6"));
+
+            // Slider
+            if (slOpt->state & State_Active) {
+                if (slOpt->state & State_Sunken) {
+                    p->setBrush(scrollbarSliderActiveColor);
+                }
+                else if (slOpt->state & State_MouseOver) {
+                    p->setBrush(scrollbarSliderHoverColor);
+                }
+                else {
+                    p->setBrush(scrollbarSliderColor);
+                }
+            }
+            else {
+                p->setBrush(backdropScrollbarSliderColor);
+            }
             p->setRenderHint(QPainter::Antialiasing, true);
             unaliasedRoundedRect(p, slider, 3, 3);
             p->setRenderHint(QPainter::Antialiasing, false);
+
             p->restore();
             break;
         }

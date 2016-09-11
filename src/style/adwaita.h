@@ -85,7 +85,16 @@ private:
 
     QColor darkFill;
 
+    QColor scrollbarBgColor;
+    QColor scrollbarSliderColor;
+    QColor scrollbarSliderHoverColor;
+    QColor scrollbarSliderActiveColor;
+
     QColor baseHoverColor;
+
+    QColor insensitiveFgColor;
+    QColor insensitiveBgColor;
+    QColor insensitiveBordersColor;
 
     QColor backdropBaseColor;
     QColor backdropTextColor;
@@ -97,9 +106,8 @@ private:
     QColor backdropDarkFill;
     QColor backdropSidebarBgColor;
 
-    QColor insensitiveFgColor;
-    QColor insensitiveBgColor;
-    QColor insensitiveBordersColor;
+    QColor backdropScrollbarBgColor;
+    QColor backdropScrollbarSliderColor;
 };
 
 #endif // ADWAITA_H
