@@ -185,6 +185,8 @@ Adwaita::Adwaita(bool lightVariant)
 
     bordersColor = lightTheme ? darken(bgColor, 30) : darken(bgColor, 12);
 
+    darkFill = blendColors(bordersColor, bgColor, 0.35);
+
     baseHoverColor = transparentize(fgColor, 0.95);
 
     // Insensitive state derived colors
@@ -521,22 +523,24 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
             const QStyleOptionTabBarBase *tbbOpt = qstyleoption_cast<const QStyleOptionTabBarBase *>(opt);
             QRect rect = tbbOpt->rect;
             p->save();
-            QLinearGradient shadowGradient(0.0, 0.0, 0.0, 1.0);
-            shadowGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-            shadowGradient.setColorAt(0.0, QColor("#b0b0b0"));
-            shadowGradient.setColorAt(1.0/(rect.height()+1)*4, Qt::transparent);
-            p->setPen(QColor("#a1a1a1"));
-            p->setBrush(QColor("#d6d6d6"));
-            p->drawRect(rect.adjusted(0,0,-1,-1));
-            p->setBrush(QBrush(shadowGradient));
-            p->drawRect(rect.adjusted(0,0,-1,-1));
+
+            if (tbbOpt->state & State_Active) {
+                p->setPen(bordersColor);
+                p->setBrush(darkFill);
+            } else {
+                p->setPen(backdropBordersColor);
+                p->setBrush(backdropDarkFill);
+            }
+            p->drawRect(rect);
+
             p->restore();
             break;
         }
         case PE_FrameTabWidget: {
             p->save();
-            p->setPen(QColor("#a1a1a1"));
-            p->setBrush(Qt::transparent);
+            p->setPen(bordersColor);
+            p->setBrush(opt->palette.base());
+            //p->setBrush(Qt::transparent);
             p->drawRect(opt->rect.adjusted(0,0,-1,-1));
             p->restore();
             break;
