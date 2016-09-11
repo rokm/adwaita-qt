@@ -642,7 +642,7 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
             break;
         }
         case PE_PanelLineEdit: {
-            if (widget && widget->parentWidget() && (widget->parentWidget()->inherits("QComboBox") || widget->parentWidget()->inherits("QAbstractSpinBox"))) {
+            if (widget && widget->parentWidget() && widget->parentWidget()->inherits("QAbstractSpinBox")) {
                 break;
             }
             QRect rect = opt->rect.adjusted(0, 0, -1, -1);
@@ -1305,51 +1305,35 @@ void Adwaita::drawComplexControl(QStyle::ComplexControl control, const QStyleOpt
             //QRect popup = subControlRect(control, cbOpt, SC_ComboBoxListBoxPopup).adjusted(0, 0, -1, -1);
 
             p->save();
+
+            // Drop-bown button (whole widget if not editable, otherwise
+            // just the selector)
             buttonBackground(p, frame, opt->state, opt->palette, widget);
-            if (cbOpt->editable) {
-                p->drawLine(arrow.topLeft(), arrow.bottomLeft());
-            }
-            else if (cbOpt->state & State_HasFocus) {
+
+            if (!cbOpt->editable && cbOpt->state & State_HasFocus) {
+                // Focus indicator for non-editable version
                 QStyleOption copyOpt(*cbOpt);
                 copyOpt.rect = cbOpt->rect.adjusted(3, 3, -3, -3);
                 drawPrimitive(QStyle::PE_FrameFocusRect, &copyOpt, p, widget);
             }
-            p->setBrush(QColor("2e3436"));
-            p->setPen(QColor("#2e3436"));
+
+            // Drop-down arrow
+            p->setBrush(cbOpt->palette.text().color());
+            p->setPen(cbOpt->palette.text().color());
+
             QPolygon triangle;
             triangle.append(arrow.center() + QPoint(-4, -1));
             triangle.append(arrow.center() + QPoint( 4, -1));
             triangle.append(arrow.center() + QPoint( 0,  3));
             p->drawPolygon(triangle, Qt::WindingFill);
-            if (cbOpt->editable) {
-                QLinearGradient shadowGradient(0.0, 0.0, 0.0, 1.0);
-                QLinearGradient backgroundGradient(0.0, 0.0, 0.0, 1.0);
-                shadowGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-                shadowGradient.setColorAt(0.0, QColor("#d4d4d4"));
-                shadowGradient.setColorAt(1.0/(editField.height()+1)*4, Qt::transparent);
-                backgroundGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-                backgroundGradient.setColorAt(0.0, QColor("#f3f3f3"));
-                backgroundGradient.setColorAt(1.0/(editField.height()+1)*16, Qt::white);
-                if (!(opt->state & State_Enabled))
-                    p->setBrush(opt->palette.button());
-                else
-                    p->setBrush(backgroundGradient);
-                QPainterPath path;
-                path.setFillRule(Qt::WindingFill);
-                path.addRoundedRect(editField.adjusted(0, 0, 0, -1), 3, 3);
-                path.addRect(editField.adjusted(3, 0, 0, -1));
-                if (opt->state & State_HasFocus) {
-                    p->setPen(opt->palette.highlight().color());
-                }
-                else {
-                    p->setPen(QColor("#a1a1a1"));
-                }
-                p->drawPath(path.simplified());
-                if (opt->state & State_Active && opt->state & State_Enabled) {
-                    p->setBrush(QBrush(shadowGradient));
-                    p->drawPath(path.simplified());
-                }
-            }
+
+            // Text entry - rendered directly as child widget
+            //if (cbOpt->editable) {
+            //    QStyleOption copyOpt(*cbOpt);
+            //    copyOpt.rect = editField;
+            //    drawPrimitive(PE_PanelLineEdit, &copyOpt, p, widget);
+            //}
+
             p->restore();
             break;
         }
