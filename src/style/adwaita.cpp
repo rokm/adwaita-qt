@@ -293,7 +293,7 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::All,      QPalette::Window,          bgColor);
     palette.setColor(QPalette::All,      QPalette::WindowText,      fgColor);
     palette.setColor(QPalette::All,      QPalette::Base,            baseColor);
-    palette.setColor(QPalette::All,      QPalette::AlternateBase,   !lightTheme ? QColor("#292929") : QColor("#ededed"));
+    palette.setColor(QPalette::All,      QPalette::AlternateBase,   baseColor); // Adwaita does not support alternating row colors
     palette.setColor(QPalette::All,      QPalette::ToolTipBase,     QColor("#060606"));
     palette.setColor(QPalette::All,      QPalette::ToolTipText,     QColor("white"));
     palette.setColor(QPalette::All,      QPalette::Text,            fgColor);
@@ -319,7 +319,7 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::Disabled, QPalette::Window,          insensitiveBgColor);
     palette.setColor(QPalette::Disabled, QPalette::WindowText,      insensitiveFgColor);
     palette.setColor(QPalette::Disabled, QPalette::Base,            insensitiveBgColor);
-    palette.setColor(QPalette::Disabled, QPalette::AlternateBase,   QColor("#ededed"));
+    palette.setColor(QPalette::Disabled, QPalette::AlternateBase,   insensitiveBgColor);  // Adwaita does not support alternating row colors
 //     palette.setColor(QPalette::Disabled, QPalette::ToolTipBase,     QColor("#ff1234"));
 //     palette.setColor(QPalette::Disabled, QPalette::ToolTipText,     QColor("#ff1234"));
     palette.setColor(QPalette::Disabled, QPalette::Text,            insensitiveFgColor);
@@ -346,7 +346,7 @@ void Adwaita::polish(QPalette &palette)
     palette.setColor(QPalette::Inactive, QPalette::Window,          backdropBgColor);
     palette.setColor(QPalette::Inactive, QPalette::WindowText,      backdropFgColor);
     palette.setColor(QPalette::Inactive, QPalette::Base,            backdropBaseColor);
-    palette.setColor(QPalette::Inactive, QPalette::AlternateBase,   QColor("#ededed"));
+    palette.setColor(QPalette::Inactive, QPalette::AlternateBase,   backdropBaseColor); // Adwaita does not support alternating row colors
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipBase,     QColor("#ff1234"));
 //     palette.setColor(QPalette::Inactive, QPalette::ToolTipText,     QColor("#ff1234"));
     palette.setColor(QPalette::Inactive, QPalette::Text,            backdropFgColor);
