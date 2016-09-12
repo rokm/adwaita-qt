@@ -601,7 +601,7 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
         }
         case PE_IndicatorToolBarSeparator: {
             p->save();
-            p->setPen("#d6d6d6");
+            p->setPen(QColor::fromRgbF(0, 0, 0, 0.1));
             p->drawLine(opt->rect.center().x(), opt->rect.top() + 4, opt->rect.center().x(), opt->rect.bottom() - 4);
             p->restore();
             break;
