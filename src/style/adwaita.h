@@ -85,6 +85,8 @@ private:
 
     QColor darkFill;
 
+    QColor menuColor;
+
     QColor scrollbarBgColor;
     QColor scrollbarSliderColor;
     QColor scrollbarSliderHoverColor;

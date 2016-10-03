@@ -188,6 +188,8 @@ Adwaita::Adwaita(bool lightVariant)
 
     darkFill = blendColors(bordersColor, bgColor, 0.35);
 
+    menuColor = lightTheme ? baseColor : blendColors(bgColor, baseColor, 0.2);
+
     scrollbarBgColor = lightTheme ? blendColors(bgColor, fgColor, 0.8) : blendColors(baseColor, bgColor, 0.5);
     scrollbarSliderColor = blendColors(fgColor, bgColor, 0.6);
     scrollbarSliderHoverColor = blendColors(fgColor, bgColor, 0.8);
@@ -613,8 +615,8 @@ void Adwaita::drawPrimitive(PrimitiveElement element, const QStyleOption *opt, Q
         case PE_FrameMenu:
         case PE_PanelMenu:
             p->save();
-            p->setPen(Qt::gray);
-            p->setBrush(opt->palette.light());
+            p->setPen(bordersColor);
+            p->setBrush(menuColor);
             p->drawRect(opt->rect.adjusted(0, 0, -1, -1));
             p->restore();
             break;
@@ -990,12 +992,12 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
             }
             QRect rect = miopt->rect;
             p->save();
-            if (miopt->state & State_Selected)
+            /*if (miopt->state & State_Selected)
                 p->setBrush(opt->palette.highlight());
             else
                 p->setBrush(opt->palette.light());
             p->setPen(Qt::transparent);
-            p->drawRect(rect);
+            p->drawRect(rect);*/
             if (miopt->state & State_Selected)
                 p->setPen(Qt::white);
             else
