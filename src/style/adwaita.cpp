@@ -921,7 +921,7 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
         }
         case CE_MenuBarEmptyArea: {
             p->save();
-            p->setPen(QColor("#d6d6d6"));
+            p->setPen(QColor::fromRgbF(0, 0, 0, 0.1));
             p->drawLine(opt->rect.bottomLeft(), opt->rect.bottomRight());
             p->restore();
             break;
@@ -937,7 +937,8 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
             p->setPen(Qt::NoPen);
             p->setBrush(opt->palette.window());
             p->drawRect(opt->rect);
-            p->setPen(QColor("#d6d6d6"));
+            
+            p->setPen(QColor::fromRgbF(0, 0, 0, 0.1));
             p->drawLine(opt->rect.bottomLeft(), opt->rect.bottomRight());
 
             if (miopt->state & State_Sunken && miopt->state & State_Enabled) {
