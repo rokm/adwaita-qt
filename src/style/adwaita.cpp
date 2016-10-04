@@ -939,7 +939,7 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
             p->setPen(Qt::NoPen);
             p->setBrush(opt->palette.window());
             p->drawRect(opt->rect);
-            
+
             p->setPen(QColor::fromRgbF(0, 0, 0, 0.1));
             p->drawLine(opt->rect.bottomLeft(), opt->rect.bottomRight());
 
@@ -980,6 +980,8 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
                 QCommonStyle::drawControl(element, opt, p, widget);
                 return;
             }
+
+            // Separator item
             if (miopt->menuItemType == QStyleOptionMenuItem::Separator) {
                 p->save();
                 p->setPen(QColor::fromRgbF(0, 0, 0, 0.1));
@@ -989,33 +991,46 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
             }
             QRect rect = miopt->rect;
             p->save();
-            /*if (miopt->state & State_Selected)
+
+            // Mark selected item (blue background)
+            if (miopt->state & State_Selected)
                 p->setBrush(opt->palette.highlight());
             else
-                p->setBrush(opt->palette.light());
+                p->setBrush(Qt::transparent);
             p->setPen(Qt::transparent);
-            p->drawRect(rect);*/
+            p->drawRect(rect.adjusted(1, 1, -1, -1));
+
+            // Set text in selected item to white (needed for the light
+            // version of the theme)
             if (miopt->state & State_Selected)
                 p->setPen(Qt::white);
             else
                 p->setPen(opt->palette.windowText().color());
+
+            // Submenu arrow indicator
             if (miopt->menuItemType & QStyleOptionMenuItem::SubMenu) {
+                p->save();
+
                 if (miopt->state & State_Selected) {
                     p->setPen(Qt::white);
-                    p->setBrush(opt->palette.light());
+                    p->setBrush(Qt::white);
                 }
                 else {
-                    p->setBrush(opt->palette.highlight());
-                    p->setPen(opt->palette.highlight().color());
+                    p->setBrush(opt->palette.windowText());
+                    p->setPen(opt->palette.windowText().color());
                 }
+
                 QPolygon triangle;
                 triangle.append(QPoint(rect.right() - 7, rect.center().y() - 3));
                 triangle.append(QPoint(rect.right() - 7, rect.center().y() + 3));
                 triangle.append(QPoint(rect.right() - 4, rect.center().y()));
                 p->setRenderHint(QPainter::Antialiasing, false);
                 p->drawPolygon(triangle, Qt::WindingFill);
-                p->setRenderHint(QPainter::Antialiasing, false);
+
+                p->restore();
             }
+
+            // Icon
             if (miopt->maxIconWidth || !miopt->icon.isNull() || miopt->checkType != QStyleOptionMenuItem::NotCheckable) {
                 QPixmap icon;
                 // TODO: improve performance - change colors only once
@@ -1070,6 +1085,7 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
                 }
                 drawItemPixmap(p, QRect(4, opt->rect.center().y() - 8, 16, 16), Qt::AlignCenter, icon);
 
+                // Text
                 QStringList split = miopt->text.split('\t');
                 drawItemText(p,
                             rect.adjusted(24,0,-8,0),
