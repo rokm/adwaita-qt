@@ -982,11 +982,8 @@ void Adwaita::drawControl(ControlElement element, const QStyleOption *opt, QPain
             }
             if (miopt->menuItemType == QStyleOptionMenuItem::Separator) {
                 p->save();
-                p->setPen(Qt::NoPen);
-                p->setBrush(opt->palette.light());
-                p->drawRect(miopt->rect);
-                p->setPen(QColor("#d6d6d6"));
-                p->drawLine(miopt->rect.left() + 8, miopt->rect.center().y(), miopt->rect.right() - 8, miopt->rect.center().y());
+                p->setPen(QColor::fromRgbF(0, 0, 0, 0.1));
+                p->drawLine(miopt->rect.left() + 1, miopt->rect.center().y(), miopt->rect.right() - 1, miopt->rect.center().y());
                 p->restore();
                 break;
             }
